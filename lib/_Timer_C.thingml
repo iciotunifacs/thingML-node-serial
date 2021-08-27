@@ -1,0 +1,5 @@
+import "_Datatypes.thingml"
+import "_TimerMsgs.thingml"
+
+// We use a ThingML built-in plugin
+protocol Timer; 

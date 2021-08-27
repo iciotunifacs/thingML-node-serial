@@ -1,0 +1,49 @@
+import "DataTypes.thingml"
+import "SharedMessages.thingml"
+import "../../lib/_Datatypes.thingml"
+import "../../lib/_Timer_JS.thingml"
+object JSObject;
+thing JsClient includes LoggerMsgs 
+@js_dep `mqtt:^4.2.8`	
+
+{
+	readonly property LED_PIN : UInt8 = 17 // GPIO 17
+	provided port sensor {
+		receives pressure
+	}
+	property client : JSObject
+
+	// function push() `client.publish("test", pass)`
+	function initialize() do
+	`var mqtt = require("mqtt");
+	`&client&` = mqtt.connect("mqtt://test.mosquitto.org");
+
+	`&client&`.on("connect", function () {
+		`&client&`.subscribe("test", function (err) {});
+	});`
+	end
+
+	function push() ``&client&`.publish.log("teste");`
+
+	statechart SC init READY {
+		on entry initialize()
+		state READY {
+			internal
+			event o:sensor?pressure
+			action do
+			push()
+			end
+		}
+	}
+}
+// protocol Serial
+// 	@serializer "Binary"
+// 	@baudrate "115200"
+// 	@serial_path_to_device "COM11"
+// 	@port "COM11";
+configuration JsClientGateway {
+	instance gw : JsClient
+	// instance timer : TimerBrowser
+	// connector blink.clock => timer.timer
+// connector gw.sensor over Serial
+}

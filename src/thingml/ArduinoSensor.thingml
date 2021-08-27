@@ -1,11 +1,7 @@
 import "SharedMessages.thingml"
 
 thing ArduinoSensor includes LoggerMsgs, TimerMsgs 
-@c_header "#include <Dps310.h>"
-@c_global "
-Dps310 ifxDps310_1 = Dps310();
-Dps310 ifxDps310_2 = Dps310();
-"
+
 {
 	
 	provided port gateway {
@@ -29,12 +25,12 @@ Dps310 ifxDps310_2 = Dps310();
 		 var p2 : Long
 		 
 		 // Reading the temperature to enable the temperature compensation
-		 `int32_t temperature;
-		  ifxDps310_1.measureTempOnce(temperature, 3);`
-		 `ifxDps310_2.measureTempOnce(temperature, 3);`
+		//  `int32_t temperature;
+		//   ifxDps310_1.measureTempOnce(temperature, 3);`
+		//  `ifxDps310_2.measureTempOnce(temperature, 3);`
 		  
-		 `ifxDps310_1.measurePressureOnce(`&p1&`, 3);`
-		 `ifxDps310_2.measurePressureOnce(`&p2&`, 3);`
+		//  `ifxDps310_1.measurePressureOnce(`&p1&`, 3);`
+		//  `ifxDps310_2.measurePressureOnce(`&p2&`, 3);`
 		 gateway!pressure(p1, p2)
 	end
 	
